@@ -65,4 +65,4 @@ Tasks are saved as JSON in the widget's Plasma config, in `~/.config/plasma-org.
 
 ## License
 
-GPL-2.0-or-later
+GPL-2.0-or-later. See [LICENSE](LICENSE).
