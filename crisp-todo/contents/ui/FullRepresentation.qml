@@ -8,12 +8,15 @@ Item {
     id: full
 
     property var store
-    property string filter: "all"       // all | active | done
+    property string filter: "all"       // all | today | active | done
     property bool newImportant: false
+    property string newDue: ""          // due date for the task being typed
+    property int pickTarget: -1         // task index the date picker edits, -1 = new task
 
     readonly property color tc: PlasmaCore.Theme.textColor
     readonly property color hl: PlasmaCore.Theme.highlightColor
     readonly property int visibleCount: !store ? 0
+                                       : filter === "today"  ? store.dueTodayCount
                                        : filter === "active" ? store.remainingCount
                                        : filter === "done"   ? store.doneCount
                                        :                       store.totalCount
@@ -24,11 +27,35 @@ Item {
     Layout.preferredHeight: PlasmaCore.Units.gridUnit * 28
 
     function submit() {
-        if (store.addTask(input.text, newImportant)) {
+        if (store.addTask(input.text, newImportant, newDue)) {
             input.text = ""
             newImportant = false
+            newDue = ""
             if (filter === "done")
                 filter = "all"
+        }
+    }
+
+    // Open the date picker for a task, or for the new task when index is -1.
+    function pickDue(taskIndex) {
+        pickTarget = taskIndex
+        datePicker.openFor(taskIndex < 0 ? newDue : store.model.get(taskIndex).due)
+    }
+
+    DatePicker {
+        id: datePicker
+        store: full.store
+        x: Math.round((full.width - width) / 2)
+        y: Math.round((full.height - height) / 2)
+        onPicked: {
+            if (full.pickTarget < 0)
+                full.newDue = date
+            else
+                full.store.setDue(full.pickTarget, date)
+        }
+        onClosed: {
+            if (full.pickTarget < 0)
+                input.forceActiveFocus()
         }
     }
 
@@ -139,6 +166,15 @@ Item {
                     Component.onCompleted: forceActiveFocus()
                 }
 
+                CalendarButton {
+                    Layout.alignment: Qt.AlignVCenter
+                    label: full.newDue && store ? store.dueLabel(full.newDue) : ""
+                    toolTip: full.newDue ? i18n("Change due date") : i18n("Set due date")
+                    iconColor: full.newDue ? full.hl : full.tc
+                    opacity: full.newDue || input.text.length > 0 ? 1 : 0.5
+                    onClicked: full.pickDue(-1)
+                }
+
                 PlasmaComponents3.ToolButton {
                     Layout.alignment: Qt.AlignVCenter
                     icon.name: full.newImportant ? "rating" : "rating-unrated"
@@ -176,6 +212,7 @@ Item {
                         store: full.store
                         listView: list
                         filter: full.filter
+                        onDueRequested: full.pickDue(taskIndex)
                     }
 
                     add: Transition {
@@ -205,6 +242,7 @@ Item {
                 spacing: PlasmaCore.Units.largeSpacing
 
                 readonly property bool allDone: store && store.totalCount > 0 && full.filter !== "done"
+                readonly property bool isToday: full.filter === "today"
 
                 CheckCircle {
                     Layout.alignment: Qt.AlignHCenter
@@ -220,6 +258,7 @@ Item {
                     font.pointSize: PlasmaCore.Theme.defaultFont.pointSize * 1.25
                     font.weight: Font.DemiBold
                     text: full.filter === "done" ? i18n("Nothing completed yet")
+                        : parent.isToday ? i18n("Nothing due today")
                         : parent.allDone ? i18n("All clear!")
                         : i18n("No tasks yet")
                 }
@@ -229,6 +268,7 @@ Item {
                     wrapMode: Text.Wrap
                     opacity: 0.6
                     text: full.filter === "done" ? i18n("Finished tasks will show up here.")
+                        : parent.isToday ? i18n("Tasks due today or overdue will show up here.")
                         : parent.allDone ? i18n("You finished everything. Enjoy the free time.")
                         : i18n("Type above and press Enter to add your first task.")
                 }
@@ -281,12 +321,13 @@ Item {
                     Repeater {
                         model: [
                             { key: "all",    label: i18n("All"),    count: store ? store.totalCount : 0 },
+                            { key: "today",  label: i18n("Today"),  count: store ? store.dueTodayCount : 0 },
                             { key: "active", label: i18n("Active"), count: store ? store.remainingCount : 0 },
                             { key: "done",   label: i18n("Done"),   count: store ? store.doneCount : 0 }
                         ]
                         delegate: Rectangle {
                             readonly property bool selected: full.filter === modelData.key
-                            implicitWidth: tabLabel.implicitWidth + PlasmaCore.Units.gridUnit
+                            implicitWidth: tabLabel.implicitWidth + Math.round(PlasmaCore.Units.gridUnit * 0.8)
                             implicitHeight: tabLabel.implicitHeight + PlasmaCore.Units.smallSpacing * 2
                             width: implicitWidth
                             height: implicitHeight
