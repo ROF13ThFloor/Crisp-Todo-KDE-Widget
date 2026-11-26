@@ -1,0 +1,6 @@
+*.plasmoid
+*.swp
+*~
+.directory
+.vscode/
+.idea/

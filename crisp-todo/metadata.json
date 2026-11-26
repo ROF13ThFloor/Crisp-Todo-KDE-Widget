@@ -1,0 +1,21 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Crisp Todo contributors"
+            }
+        ],
+        "Category": "Utilities",
+        "Description": "A clean, friendly todo list for your panel or desktop",
+        "Icon": "view-task",
+        "Id": "local.crisptodo",
+        "License": "GPL-2.0+",
+        "Name": "Crisp Todo",
+        "ServiceTypes": [
+            "Plasma/Applet"
+        ],
+        "Version": "1.0"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}
