@@ -8,7 +8,7 @@
         "Category": "Utilities",
         "Description": "A clean, friendly todo list for your panel or desktop",
         "Icon": "view-task",
-        "Id": "local.crisptodo",
+        "Id": "com.github.rof13thfloor.crisptodo",
         "License": "GPL-2.0+",
         "Name": "Crisp Todo",
         "ServiceTypes": [

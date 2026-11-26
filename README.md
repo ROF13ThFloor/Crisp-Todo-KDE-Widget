@@ -38,7 +38,7 @@ plasmashell --replace & disown
 To uninstall:
 
 ```sh
-kpackagetool5 -t Plasma/Applet -r local.crisptodo
+kpackagetool5 -t Plasma/Applet -r com.github.rof13thfloor.crisptodo
 ```
 
 ## Development
@@ -46,10 +46,10 @@ kpackagetool5 -t Plasma/Applet -r local.crisptodo
 Preview the widget in its own window:
 
 ```sh
-plasmawindowed local.crisptodo
+plasmawindowed com.github.rof13thfloor.crisptodo
 ```
 
-For a resizable test window, install `plasma-sdk` and run `plasmoidviewer -a local.crisptodo`.
+For a resizable test window, install `plasma-sdk` and run `plasmoidviewer -a com.github.rof13thfloor.crisptodo`.
 
 | File | Purpose |
 | --- | --- |
