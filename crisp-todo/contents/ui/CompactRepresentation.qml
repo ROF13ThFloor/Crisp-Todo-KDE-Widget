@@ -26,7 +26,9 @@ MouseArea {
         height: Math.max(PlasmaCore.Units.gridUnit * 0.75, Math.round(compact.height * 0.45))
         width: Math.max(height, countLabel.implicitWidth + height * 0.5)
         radius: height / 2
-        color: PlasmaCore.Theme.highlightColor
+        color: compact.store && compact.store.overdueCount > 0
+               ? PlasmaCore.Theme.negativeTextColor
+               : PlasmaCore.Theme.highlightColor
         border.width: 1
         border.color: PlasmaCore.Theme.backgroundColor
 

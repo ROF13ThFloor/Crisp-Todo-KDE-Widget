@@ -9,9 +9,10 @@ A clean, friendly todo list widget for KDE Plasma 5.
 - Type a task and press **Enter** to add it. Click the star to add it as important.
 - Round, animated checkboxes. Finished tasks fade out and move to the bottom.
 - Hover a task to drag it into a new position, star it, or delete it.
+- Due dates: pick a date from the calendar or choose Today, Tomorrow or Next week. Overdue tasks turn red, and the **Today** tab lists everything due today or overdue.
 - Double-click a task to edit it (**Enter** saves, **Esc** cancels).
 - Undo after deleting a task or clearing completed ones.
-- **All / Active / Done** filters with counts, and a progress ring in the header.
+- **All / Today / Active / Done** filters with counts, and a progress ring in the header.
 - The panel icon shows how many tasks are left.
 - Uses your Plasma theme colours, so it works in light and dark mode.
 
