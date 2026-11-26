@@ -59,6 +59,19 @@ For a resizable test window, install `plasma-sdk` and run `plasmoidviewer -a com
 | `crisp-todo/contents/ui/CompactRepresentation.qml` | Panel icon with the remaining-tasks badge |
 | `crisp-todo/contents/config/` | Settings schema and settings page |
 
+## Releases
+
+Releases are made automatically. When a milestone named like `v1.1` is closed on GitHub, the
+[Release workflow](.github/workflows/release.yml) sets the version in `metadata.json`, builds
+`crisp-todo-v1.1.plasmoid` and publishes a release with the closed issues as release notes.
+It stops if the milestone still has open issues.
+
+To install a release, download the `.plasmoid` file and run:
+
+```sh
+kpackagetool5 -t Plasma/Applet -i crisp-todo-v1.1.plasmoid
+```
+
 ## Where tasks are stored
 
 Tasks are saved as JSON in the widget's Plasma config, in `~/.config/plasma-org.kde.plasma.desktop-appletsrc` under the `todos` key. Each widget instance keeps its own list. Removing the widget also removes its tasks.
